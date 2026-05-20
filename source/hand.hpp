@@ -22,6 +22,7 @@ public:
     bool OpenPalm();
     bool Fist();
     bool Like();
+    bool Point();
 };
 
 Hand::Hand()
@@ -124,4 +125,21 @@ bool Hand::Like()
 
     thumb.attach(SERVO_THUMB);
     thumb.write(180);
+}
+bool Hand::Point()
+{
+    pinkie.attach(SERVO_PINKIE);
+    pinkie.write(90);
+
+    ring.attach(SERVO_RING);
+    ring.write(90);
+
+    middle.attach(SERVO_MIDDLE);
+    middle.write(90);
+
+    point.attach(SERVO_POINT);
+    point.write(180);
+
+    thumb.attach(SERVO_THUMB);
+    thumb.write(90);
 }
