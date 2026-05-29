@@ -96,6 +96,7 @@ void pollSerialCommands() {
 
 void setup() {
   Serial.begin(9600);
+  analogReadResolution(12);
   pinMode(EMG_PIN_A3, INPUT);
   pinMode(EMG_PIN_A4, INPUT);
   
