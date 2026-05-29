@@ -1,9 +1,21 @@
 // arduino nano 33 ble - beacon (broadcaster)
 #include <ArduinoBLE.h>
+#include <string.h>
 
 const char* deviceName = "Nano";
 const int EMG_PIN_A3 = A3;
 const int EMG_PIN_A4 = A4;
+const unsigned long DATASET_SAMPLE_INTERVAL_MS = 40;
+
+struct EmgSample {
+  unsigned long timestampMs;
+  int a3;
+  int a4;
+};
+
+bool datasetCaptureActive = false;
+char serialCommandBuffer[48];
+size_t serialCommandLength = 0;
 
 // Gesture enum
 enum Gesture {
@@ -29,6 +41,59 @@ Gesture runTinyMLInference(int emg_a3, int emg_a4) {
   return THUMBSUP;
 }
 
+EmgSample getDatasetSample() {
+  EmgSample sample;
+  sample.timestampMs = millis();
+  sample.a3 = analogRead(EMG_PIN_A3);
+  sample.a4 = analogRead(EMG_PIN_A4);
+  return sample;
+}
+
+void printDatasetSample(const EmgSample& sample) {
+  Serial.print(sample.timestampMs);
+  Serial.print(',');
+  Serial.print(sample.a3);
+  Serial.print(',');
+  Serial.println(sample.a4);
+}
+
+void handleSerialCommand(const char* command) {
+  if (strcmp(command, "BEGIN_CAPTURE") == 0) {
+    datasetCaptureActive = true;
+    Serial.println("CAPTURE_BEGIN");
+    return;
+  }
+
+  if (strcmp(command, "END_CAPTURE") == 0) {
+    datasetCaptureActive = false;
+    Serial.println("CAPTURE_END");
+    return;
+  }
+}
+
+void pollSerialCommands() {
+  while (Serial.available() > 0) {
+    char incoming = static_cast<char>(Serial.read());
+
+    if (incoming == '\r') {
+      continue;
+    }
+
+    if (incoming == '\n') {
+      serialCommandBuffer[serialCommandLength] = '\0';
+      if (serialCommandLength > 0) {
+        handleSerialCommand(serialCommandBuffer);
+      }
+      serialCommandLength = 0;
+      continue;
+    }
+
+    if (serialCommandLength < sizeof(serialCommandBuffer) - 1) {
+      serialCommandBuffer[serialCommandLength++] = incoming;
+    }
+  }
+}
+
 void setup() {
   Serial.begin(9600);
   pinMode(EMG_PIN_A3, INPUT);
@@ -42,6 +107,14 @@ void setup() {
 }
 
 void loop() {
+  pollSerialCommands();
+
+  if (datasetCaptureActive) {
+    printDatasetSample(getDatasetSample());
+    delay(DATASET_SAMPLE_INTERVAL_MS);
+    return;
+  }
+
   // Read EMG from both channels
   int emg_a3 = analogRead(EMG_PIN_A3);
   int emg_a4 = analogRead(EMG_PIN_A4);

@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/mac/Desktop/theflexprotocol/build/default/cmake_install.cmake",
+		"/Users/mac/Desktop/theflexprotocol/build/default/source/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

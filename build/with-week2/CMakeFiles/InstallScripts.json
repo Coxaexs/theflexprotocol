@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/mac/Desktop/theflexprotocol/build/with-week2/cmake_install.cmake",
+		"/Users/mac/Desktop/theflexprotocol/build/with-week2/source/cmake_install.cmake",
+		"/Users/mac/Desktop/theflexprotocol/build/with-week2/week2examples/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
