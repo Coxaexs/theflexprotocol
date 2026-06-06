@@ -5,8 +5,8 @@
 
 const char *deviceName = "Nano";
 const int EMG_PIN_A3 =
-    A3; // I think these gotta be a0 and a1, maybe change it idk
-const int EMG_PIN_A4 = A4;
+    A0; // I think these gotta be a0 and a1, maybe change it idk
+const int EMG_PIN_A4 = A1;
 const unsigned long DATASET_SAMPLE_INTERVAL_MS = 40;
 
 // UUIDs, gotta match pico so dont touch
@@ -36,6 +36,8 @@ enum Gesture {
   THUMBSUP = 4,
   RELAX = 5
 };
+
+// could change
 
 // BLE peripheral reference
 BLEDevice picoDevice;

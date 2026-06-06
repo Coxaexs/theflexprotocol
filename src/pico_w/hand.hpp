@@ -42,7 +42,7 @@ public:
       angle = 180;
 
     servo_set_position(gpio_, angle);
-    DBG_PRINT("[SERVO] GPIO %u → %d°\n", gpio_, angle);
+    DBG_PRINT("[SERVO] GPIO %u : %d°\n", gpio_, angle);
   }
 
 private:
@@ -85,13 +85,14 @@ inline Hand::Hand() {
   thumb_.attach(SERVO_THUMB);
   OpenPalm();
   sleep_ms(200);
-
   Fist();
   sleep_ms(200);
+  // initial check for all the servos
 }
 
 inline void Hand::writePose(int p, int r, int m, int po, int t) {
-  DBG_PRINT("[HAND] Pose: P=%d R=%d M=%d Po=%d T=%d\n", p, r, m, po, t);
+  DBG_PRINT("[HAND] Pose: Pinkie=%d Ring=%d Middle=%d Point=%d Thumb=%d\n", p,
+            r, m, po, t);
   pinkie_.write(p);
   ring_.write(r);
   middle_.write(m);
@@ -100,34 +101,34 @@ inline void Hand::writePose(int p, int r, int m, int po, int t) {
 }
 
 inline void Hand::OpenPalm() {
-  DBG_PRINT("[HAND] → OpenPalm\n");
+  DBG_PRINT("[HAND] : OpenPalm\n");
   writePose(180, 180, 180, 180, 180);
 }
 inline void Hand::Fist() {
-  DBG_PRINT("[HAND] → Fist\n");
+  DBG_PRINT("[HAND] : Fist\n");
   writePose(0, 0, 0, 0, 0);
 }
 inline void Hand::Like() {
-  DBG_PRINT("[HAND] → Like\n");
+  DBG_PRINT("[HAND] : Like\n");
   writePose(0, 0, 0, 0, 180);
 }
 inline void Hand::Point() {
-  DBG_PRINT("[HAND] → Point\n");
+  DBG_PRINT("[HAND] : Point\n");
   writePose(0, 0, 0, 180, 0);
 }
 inline void Hand::MiddleFinger() {
-  DBG_PRINT("[HAND] → MiddleFinger\n");
+  DBG_PRINT("[HAND] : MiddleFinger\n");
   writePose(0, 0, 180, 0, 0);
 }
 
 // Pinch: index + thumb, others closed
 inline void Hand::Pinch() {
-  DBG_PRINT("[HAND] → Pinch\n");
+  DBG_PRINT("[HAND] : Pinch\n");
   writePose(0, 0, 0, 90, 90);
 }
 
 // Relax is treated the same as open palm
 inline void Hand::Relax() {
-  DBG_PRINT("[HAND] → Relax\n");
+  DBG_PRINT("[HAND] : Relax\n");
   OpenPalm();
 }
