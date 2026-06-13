@@ -1,0 +1,3 @@
+[submodule "src/pico_w/pico-servo"]
+	path = src/pico_w/pico-servo
+	url = https://github.com/obstruse/pico-servo

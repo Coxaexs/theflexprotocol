@@ -41,4 +41,16 @@
 *.dwo
 
 build/
+
+README.md
+
+# PlatformIO build & dependency directories
+.pio
+.pioenvs/
+.piolibdeps/
+.clang_complete
+.gcc-flags.json
+
+# OS files
+.DS_Store
 source/
